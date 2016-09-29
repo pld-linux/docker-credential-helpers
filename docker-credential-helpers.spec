@@ -8,6 +8,7 @@ Source0:	https://github.com/docker/docker-credential-helpers/archive/v%{version}
 # Source0-md5:	dcd544bb5898713e27130a15070ed044
 URL:		https://github.com/docker/docker-credential-helpers
 BuildRequires:	golang >= 1.3.1
+Requires:	docker >= 1.11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_enable_debug_packages 0
