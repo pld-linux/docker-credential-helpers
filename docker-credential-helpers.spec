@@ -1,11 +1,11 @@
 Summary:	Native credentials store for Docker
 Name:		docker-credential-helpers
-Version:	0.6.0
+Version:	0.6.2
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/docker/docker-credential-helpers/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	0ae568ce2342cd194734eaac0aca520d
+# Source0-md5:	7816e03eaed93a689d1e9c9f1f35d408
 URL:		https://github.com/docker/docker-credential-helpers
 BuildRequires:	golang >= 1.3.1
 BuildRequires:	libsecret-devel
