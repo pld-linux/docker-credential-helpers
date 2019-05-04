@@ -13,7 +13,7 @@ URL:		https://github.com/docker/docker-credential-helpers
 BuildRequires:	golang >= 1.3.1
 BuildRequires:	libsecret-devel
 BuildRequires:	pkgconfig
-Requires:	docker >= 1.11
+Requires:	docker(engine) >= 1.11
 Suggests:	password-store
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
