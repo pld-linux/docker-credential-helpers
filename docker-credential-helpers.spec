@@ -1,7 +1,10 @@
+# TODO
+# - split providers to subpackages?
+#
 Summary:	Native credentials store for Docker
 Name:		docker-credential-helpers
 Version:	0.6.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/docker/docker-credential-helpers/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -11,6 +14,7 @@ BuildRequires:	golang >= 1.3.1
 BuildRequires:	libsecret-devel
 BuildRequires:	pkgconfig
 Requires:	docker >= 1.11
+Suggests:	password-store
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_enable_debug_packages 0
@@ -32,6 +36,7 @@ ln -s ../../.. src/%{import_path}
 export GOPATH=$(pwd)
 
 %gobuild -o bin/docker-credential-secretservice secretservice/cmd/main_linux.go
+%gobuild -o bin/docker-credential-pass pass/cmd/main_linux.go
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -44,4 +49,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.md CHANGELOG.md LICENSE
+%attr(755,root,root) %{_bindir}/docker-credential-pass
 %attr(755,root,root) %{_bindir}/docker-credential-secretservice
