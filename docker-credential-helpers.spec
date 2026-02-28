@@ -4,7 +4,7 @@
 Summary:	Native credentials store for Docker
 Name:		docker-credential-helpers
 Version:	0.6.2
-Release:	2
+Release:	3
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/docker/docker-credential-helpers/archive/v%{version}/%{name}-%{version}.tar.gz
