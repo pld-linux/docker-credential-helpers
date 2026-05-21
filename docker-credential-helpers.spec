@@ -3,24 +3,23 @@
 #
 Summary:	Native credentials store for Docker
 Name:		docker-credential-helpers
-Version:	0.6.2
-Release:	3
+Version:	0.9.7
+Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/docker/docker-credential-helpers/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	7816e03eaed93a689d1e9c9f1f35d408
+# Source0-md5:	93a145569cc6a81eda7d84c2ba00f002
 URL:		https://github.com/docker/docker-credential-helpers
-BuildRequires:	golang >= 1.3.1
+BuildRequires:	golang >= 1.21
 BuildRequires:	libsecret-devel
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 2.009
 Requires:	docker(engine) >= 1.11
 Suggests:	password-store
+ExclusiveArch:	%go_arches
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_enable_debug_packages 0
-%define		gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n')" -a -v -x %{?**};
-%define		gopath		%{_libdir}/golang
-%define		import_path	github.com/docker/%{name}
+%undefine	_debugsource_packages
 
 %description
 docker-credential-helpers is a suite of programs to use native stores
@@ -29,25 +28,21 @@ to keep Docker credentials safe.
 %prep
 %setup -q
 
-install -d src/$(dirname %{import_path})
-ln -s ../../.. src/%{import_path}
-
 %build
-export GOPATH=$(pwd)
-
-%gobuild -o bin/docker-credential-secretservice secretservice/cmd/main_linux.go
-%gobuild -o bin/docker-credential-pass pass/cmd/main_linux.go
+%{__make} build-pass build-secretservice \
+	DESTDIR=bin \
+	VERSION="v%{version}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_bindir}
-install -p bin/* $RPM_BUILD_ROOT%{_bindir}
+install -p bin/docker-credential-pass bin/docker-credential-secretservice $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.md CHANGELOG.md LICENSE
+%doc README.md LICENSE
 %attr(755,root,root) %{_bindir}/docker-credential-pass
 %attr(755,root,root) %{_bindir}/docker-credential-secretservice
